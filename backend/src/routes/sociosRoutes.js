@@ -6,5 +6,6 @@ router.post("/", sociosController.createSocio);
 router.get("/", sociosController.getSocios);
 router.get("/:id", sociosController.getSocioById);
 router.delete("/:id", sociosController.deleteSocio);
+router.put("/:id", sociosController.updateSocio);
 
 module.exports = router;

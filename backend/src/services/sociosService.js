@@ -40,9 +40,19 @@ const deleteSocio = async(id)=> {
     return socio;
 };
 
+// Actualizar socio
+const updateSocio = async(id, datos)=> {
+    const socioActualizado = await prisma.socio.update({
+        where: { id },
+        data: datos
+    });
+    return socioActualizado;
+};
+
 module.exports = {
     createSocio,
     getSocios,
     getSocioById,
-    deleteSocio
+    deleteSocio,
+    updateSocio
 };

@@ -109,9 +109,46 @@ const deleteSocio = async(req, res)=> {
   }
 };
 
+const updateSocio = async(req, res)=> {
+  try {
+    const id = Number(req.params.id);
+    
+    if(isNaN(id)) {
+      return res.status(400).json({
+        error: "El id debe ser un número válido"
+      });
+    }
+
+    const socio = await sociosService.getSocioById(id);
+
+    if(!socio) {
+      return res.status(404).json({
+        error: "Socio no encontrado"
+      });
+    }
+
+    const datosActualizados = req.body;
+
+    const socioActualizado = await sociosService.updateSocio(id, datosActualizados);
+
+    return res.status(200).json({
+      mensaje: "Socio actualizado correctamente",
+      socio: socioActualizado
+    });
+
+  } catch(error) {
+    console.error(error);
+
+    return res.status(500).json({
+      error: "Error al actualizar el socio"
+    });
+  }
+};
+
 module.exports = {
   createSocio,
   getSocios,
   getSocioById,
-  deleteSocio
+  deleteSocio,
+  updateSocio
 };
