@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Plan {
+  id             Int     @id @default(autoincrement())
+  nombre         String  @unique
+  precio         Float
+  duracionMeses  Int
+  socios         Socio[]
+}
+
 model Socio {
   id            Int      @id @default(autoincrement())
   nombre        String
@@ -16,4 +24,7 @@ model Socio {
   email         String?
   fechaAlta     DateTime @default(now())
   observaciones String?
+
+  planId         Int?
+  plan           Plan?    @relation(fields: [planId], references: [id])
 }

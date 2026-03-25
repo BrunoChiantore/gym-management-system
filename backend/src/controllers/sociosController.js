@@ -1,13 +1,26 @@
 const sociosService = require("../services/sociosService");
+const planesService = require("../services/planesService");
 
 const createSocio = async (req, res) => {
   try {
-    const { nombre, apellido, dni, telefono, email, observaciones } = req.body;
+    const { nombre, apellido, dni, telefono, email, observaciones, planId } = req.body;
 
     if (!nombre || !apellido || !dni) {
       return res.status(400).json({
         error: "Los campos nombre, apellido y dni son obligatorios"
       });
+    }
+
+    if (planId) {
+      const planes = await planesService.getPlanes();
+
+      const existePlan = planes.find((plan) => plan.id === planId);
+
+      if (!existePlan) {
+        return res.status(400).json({
+          error: "El plan no existe"
+        });
+      }
     }
 
     const resultado = await sociosService.createSocio({
@@ -16,7 +29,8 @@ const createSocio = async (req, res) => {
       dni,
       telefono,
       email,
-      observaciones
+      observaciones,
+      planId
     });
 
     return res.status(201).json(resultado);
